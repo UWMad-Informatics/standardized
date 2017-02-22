@@ -55,7 +55,7 @@ def execute(model, data, savepath, lwr_data, *args, **kwargs):
         Yactual = np.asarray(lwr_data.get_y_data()).ravel()
         rms = np.sqrt(mean_squared_error(Ypredict, Yactual))
         rms_list.append(rms)
-        if rms > 200:
+        if rms > 75:
             ax[0].scatter(Yactual, Ypredict, s= 5, c = cmap(alloy), label= alloy, lw = 0)
         else: ax[0].scatter(Yactual, Ypredict, s = 5, c = 'black', lw = 0)
 
@@ -73,7 +73,7 @@ def execute(model, data, savepath, lwr_data, *args, **kwargs):
     overall_y_prediction = model.predict(lwr_data.get_x_data())
     overall_rms = np.sqrt(mean_squared_error(overall_y_prediction, overall_y_data))
     overall_me = mean_error(overall_y_prediction, overall_y_data)
-    lwr_data.add_exclusive_filter("CD delta sigma", '<', 200)
+    lwr_data.add_exclusive_filter(data.y_feature, '<', 200)
     over200_rms = np.sqrt(mean_squared_error(np.asarray(lwr_data.get_y_data()).ravel(), model.predict(lwr_data.get_x_data())))
     lwr_data.remove_all_filters()
     lwr_data.add_exclusive_filter("Time(Years)", '<', 60)
@@ -82,7 +82,7 @@ def execute(model, data, savepath, lwr_data, *args, **kwargs):
     y_prediction_60_100 = model.predict(lwr_data.get_x_data())
     lwr_rms = np.sqrt(mean_squared_error(y_data_60_100, y_prediction_60_100))
     lwr_me = mean_error(y_prediction_60_100,y_data_60_100)
-    lwr_data.add_exclusive_filter("CD delta sigma", '<', 200)
+    lwr_data.add_exclusive_filter(data.y_feature, '<', 200)
     lwr_over200_rms = np.sqrt(
         mean_squared_error(np.asarray(lwr_data.get_y_data()).ravel(), model.predict(lwr_data.get_x_data())))
 
